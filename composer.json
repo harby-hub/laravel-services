@@ -7,14 +7,21 @@
         "laravel"
     ],
     "license": "MIT",
-    "require": {
-        "php": "^7.1.3"
-    },
     "authors": [
         {
             "name": "mahmoud harby",
             "email": "mahmuod.sami.99@gmail.com"
         }
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "harby\\servicesProvider"
+            ],
+            /*"aliases": {
+                "harby": "Nuwave\\Lighthouse\\GraphQL"
+            }*/
+        }
+    },
     "require": {}
 }

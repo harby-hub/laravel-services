@@ -1,0 +1,60 @@
+<?php 
+
+namespace DummyNamespace ;
+
+use App\Http\Interface\Service as InterfaceService;
+
+abstract class DummyClass implements InterfaceService{
+
+	public int		$code = 404		;
+
+	public bool		$check = true	;
+
+	public string	$title = __( get_class( $this ) );
+
+	public string	$body;
+
+	public object	$Request;
+
+	abstract protected function getRequest( );
+
+	abstract protected function getEvents( );
+
+	abstract protected function getevents( );
+
+	abstract protected function getevents( );
+
+	public function validRequest( $inputs , $options = [ ] ){
+
+		$validatedData = \Validator::make( $inputs , $options );
+		if ( $validatedData -> fails( ) ) return $this -> response( 500 , $validatedData -> errors( ) , "error, check response errors" , false );
+		else return $this -> response( 200 , " " , " " , true );
+
+	}
+
+	public static function curl_get_file_contents( $url ){
+
+		$c = curl_init( );
+		curl_setopt( $c , CURLOPT_RETURNTRANSFER , 1 );
+		curl_setopt( $c , CURLOPT_URL , $url );
+		$contents = curl_exec( $c );
+		$err  = curl_getinfo( $c , CURLINFO_HTTP_CODE );
+		curl_close( $c );
+		if ( $contents ) return json_decode( $contents ) ;
+		else return FALSE ;
+
+	}
+
+	public function response( ) {
+		return (object) [
+			"code"		=> $this -> code	,
+			"title"		=> $this -> title	,
+			"check"		=> $this -> check	,
+			"body"		=> ( $check ) ? $this -> data	: null	,
+			"errors"	=> ( $check ) ? null	: $data	,
+		];
+	}
+
+}
+
+
