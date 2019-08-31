@@ -4,8 +4,8 @@ namespace harby\services;
 
 use Illuminate\Support\ServiceProvider;
 
-use App\Console\Commands\RequestsMakeCommand;
-use App\Console\Commands\ServiceMakeCommand;
+use harby\services\Commands\RequestsMakeCommand;
+use harby\services\Commands\ServiceMakeCommand;
 
 class servicesProvider extends ServiceProvider {
     /**
