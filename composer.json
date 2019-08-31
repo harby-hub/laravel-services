@@ -17,7 +17,7 @@
         "laravel": {
             "providers": [
                 "harby\\servicesProvider"
-            ],
+            ]
         }
     },
     "require": {}
