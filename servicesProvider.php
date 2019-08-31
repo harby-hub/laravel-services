@@ -1,6 +1,6 @@
 <?php
 
-namespace Nuwave\Lighthouse;
+namespace harby;
 
 use Illuminate\Support\ServiceProvider;
 
