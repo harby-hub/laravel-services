@@ -18,9 +18,6 @@
             "providers": [
                 "harby\\servicesProvider"
             ],
-            /*"aliases": {
-                "harby": "Nuwave\\Lighthouse\\GraphQL"
-            }*/
         }
     },
     "require": {}
