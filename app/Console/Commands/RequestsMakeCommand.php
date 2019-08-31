@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace harby\services\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 

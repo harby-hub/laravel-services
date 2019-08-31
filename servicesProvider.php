@@ -1,6 +1,6 @@
 <?php
 
-namespace harby;
+namespace harby\services;
 
 use Illuminate\Support\ServiceProvider;
 
