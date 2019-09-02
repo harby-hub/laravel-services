@@ -2,57 +2,87 @@
 
 namespace DummyNamespace ;
 
-use App\Http\Interface\Service as InterfaceService;
+use harby\services\Eloquent\service;
 
-abstract class DummyClass implements InterfaceService{
+use DummyRootNamespaceHttp\Model\DummyClassModel;
+use DummyRootNamespaceHttp\Request\DummyClassRequest;
+use Illuminate\Support\Facades\Event;
 
-	public int		$code = 404		;
+class DummyClassService extends service{
 
-	public bool		$check = true	;
+	public function getRequest( ) {
+		return new DummyClassRequest( );
+	}
 
-	public string	$title = __( get_class( $this ) );
+	public function getEvents( ){ }
 
-	public string	$body;
+	public function store( Request $request ) {
 
-	public object	$Request;
+		$validator = $this -> validRequest( $request -> all( ) , $this -> getRequest( ) -> store( ) -> rules( ) );
 
-	abstract protected function getRequest( );
+		if ( ! $validator -> check ) return $validator ;
+		else $sanitize = $validator -> body ;
 
-	abstract protected function getEvents( );
+		Event::fire('DummyClass.store.before' );
 
-	abstract protected function getevents( );
+		$create = DummyClassModel::create( $sanitize );
 
-	abstract protected function getevents( );
+		Event::fire('DummyClass.store.after', $create);
 
-	public function validRequest( $inputs , $options = [ ] ){
+		$this -> code	= 200	;
+		$this -> check	= true	;
+		$this -> title	= 'store successful' ;
+		$this -> message= __( 'store successful' );
+		$this -> body	= $create ;
 
-		$validatedData = \Validator::make( $inputs , $options );
-		if ( $validatedData -> fails( ) ) return $this -> response( 500 , $validatedData -> errors( ) , "error, check response errors" , false );
-		else return $this -> response( 200 , " " , " " , true );
+		return $this -> response( );
 
 	}
 
-	public static function curl_get_file_contents( $url ){
+	public function update(Request $request, $id) {
 
-		$c = curl_init( );
-		curl_setopt( $c , CURLOPT_RETURNTRANSFER , 1 );
-		curl_setopt( $c , CURLOPT_URL , $url );
-		$contents = curl_exec( $c );
-		$err  = curl_getinfo( $c , CURLINFO_HTTP_CODE );
-		curl_close( $c );
-		if ( $contents ) return json_decode( $contents ) ;
-		else return FALSE ;
+		$validator = $this -> validRequest( $request -> all( ) , $this -> getRequest( ) -> update( ) -> rules( ) );
+
+		if ( ! $validator -> check ) return $validator ;
+		else $sanitize = $validator -> body ;
+
+		Event::fire('DummyClass.update.before' );
+
+		$update = DummyClassModel::find( $id ) -> update( $sanitize );
+
+		Event::fire('DummyClass.update.after', $update);
+
+		$this -> code	= 200	;
+		$this -> check	= true	;
+		$this -> title	= 'update successful' ;
+		$this -> message= __( 'update successful' );
+		$this -> body	= $update ;
+
+		return $this -> response( );
 
 	}
 
-	public function response( ) {
-		return (object) [
-			"code"		=> $this -> code	,
-			"title"		=> $this -> title	,
-			"check"		=> $this -> check	,
-			"body"		=> ( $check ) ? $this -> data	: null	,
-			"errors"	=> ( $check ) ? null	: $data	,
-		];
+	public function destroy( $id ) {
+
+		$validator = $this -> validRequest( $request -> all( ) , $this -> getRequest( ) -> destroy( ) -> rules( ) );
+
+		if ( ! $validator -> check ) return $validator ;
+		else $sanitize = $validator -> body ;
+
+		Event::fire('DummyClass.destroy.before' );
+
+		$destroy = DummyClassModel::find( $id ) -> SoftDeletes(  );
+
+		Event::fire('DummyClass.destroy.after', $destroy);
+
+		$this -> code	= 200	;
+		$this -> check	= true	;
+		$this -> title	= 'destroy successful' ;
+		$this -> message= __( 'destroy successful' );
+		$this -> body	= $destroy ;
+
+		return $this -> response( );
+
 	}
 
 }

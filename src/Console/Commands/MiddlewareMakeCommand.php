@@ -1,31 +1,31 @@
 <?php
 
-namespace harby\services\Console\Commands ;
+namespace Illuminate\Routing\Console;
 
-use Illuminate\Console\GeneratorCommand ;
+use Illuminate\Console\GeneratorCommand;
 
-class RequestsMakeCommand extends GeneratorCommand {
+class MiddlewareMakeCommand extends GeneratorCommand
+{
     /**
-     * The name and signature of the console command.
+     * The console command name.
      *
      * @var string
      */
-    protected $name = 'service:request';
-
+    protected $name = 'service:middleware';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new form request class';
+    protected $description = 'Create a new middleware class';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Requests';
+    protected $type = 'Middleware';
 
     /**
      * Get the stub file for the generator.
@@ -34,7 +34,7 @@ class RequestsMakeCommand extends GeneratorCommand {
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/Requests.stub';
+        return __DIR__.'/stubs/middleware.stub';
     }
 
     /**
@@ -45,7 +45,6 @@ class RequestsMakeCommand extends GeneratorCommand {
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Http\Requests';
+        return $rootNamespace.'\Http\Middleware';
     }
-
 }

@@ -1,12 +1,13 @@
 {
     "name": "harby/services",
     "type": "library",
+    "license": "MIT",
     "description": "custom laravel package",
+    "require": {},
     "keywords": [
         "framework",
         "laravel"
     ],
-    "license": "MIT",
     "authors": [
         {
             "name": "mahmoud harby",
@@ -24,6 +25,5 @@
         "psr-4": {
             "harby\\services\\": "src"
         }
-    },
-    "require": {}
+    }
 }

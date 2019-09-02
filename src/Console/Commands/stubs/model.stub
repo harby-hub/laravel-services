@@ -1,0 +1,91 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class DummyClass extends Model {
+
+	use SoftDeletes ;
+
+    protected $table = 'DummyClass';
+
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [
+		'active'		,
+		'deleted_at'	,
+		'created_at'	,
+		'updated_at'	,
+	];
+
+	/**
+	 * The attributes that should be hidden for arrays.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [
+		//
+	];
+
+	/**
+	 * The accessors to append to the model's array form.
+	 *
+	 * @var array
+	 */
+	protected $appends = [
+        'user',
+        'created_at_diffForHumans',
+	];
+
+	/**
+	 * The attributes that should be mutated to dates.
+	 *
+	 * @var array
+	 */
+	protected $dates = [
+		'created_at' ,
+		'updated_at',
+		'deleted_at',
+	];
+
+	/**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+	protected $casts = [
+		'active'		=> 'boolean',
+		'created_at'	=> 'datetime',
+		'updated_at'	=> 'datetime',
+		'deleted_at'	=> 'datetime',
+	];
+
+    public function getuserAttribute ( $value ) {
+        return $this -> belongsTo( User::class , 'user_id' ) -> get( ) [ 0 ] ;
+    }
+
+    public function getcreatedAtDiffForHumansAttribute ( $value ) {
+        return $this -> created_at -> diffForHumans( ) ;
+    }
+
+	public function scopeNotDelete( $query ){
+		return $query -> where( 'deleted_at' , `NULL` );
+	}
+
+	public function scopeActive( $query ){
+		return $query -> where( 'active' , 1 );
+	}
+
+	public function scopeConditions( $query ){
+		return $this
+			-> NotDelete( )
+			-> Active( )
+		;
+	}
+
+}
