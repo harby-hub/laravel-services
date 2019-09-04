@@ -43,9 +43,8 @@ class RequestsMakeCommand extends GeneratorCommand {
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace.'\Http\Requests';
+    protected function getDefaultNamespace( $rootNamespace ) {
+        return config( 'harby-services.namespaces.Requests' , $rootNamespace . '\Requests' ) ;
     }
 
 }

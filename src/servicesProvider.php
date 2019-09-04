@@ -9,8 +9,16 @@ use harby\services\Console\Commands\ServiceMakeCommand;
 use harby\services\Console\Commands\ModelMakeCommand;
 use harby\services\Console\Commands\ControllerMakeCommand;
 use harby\services\Console\Commands\MigrateMakeCommand;
+use harby\services\Console\Commands\TestMakeCommand;
 
 class servicesProvider extends ServiceProvider {
+
+    public function boot( ) {
+        $this->publishes([
+            __DIR__ . '/../config/config.php' => base_path( 'config/harby-services.php' )
+        ], 'config' );
+    }
+
     /**
      * Register any application services.
      *
@@ -24,6 +32,7 @@ class servicesProvider extends ServiceProvider {
                 RequestsMakeCommand::class,
                 ServiceMakeCommand::class,
                 MigrateMakeCommand::class,
+                TestMakeCommand::class,
             ]);
         }
     }

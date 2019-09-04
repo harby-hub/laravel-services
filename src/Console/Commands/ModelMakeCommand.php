@@ -112,7 +112,7 @@ class ModelMakeCommand extends GeneratorCommand {
 	 * @return string
 	 */
 	protected function getDefaultNamespace( $rootNamespace ) {
-		return $rootNamespace . '\Http\Models' ;
+		return config( 'harby-services.namespaces.Models' , $rootNamespace . '\Models' ) ;
 	}
 
 	/**

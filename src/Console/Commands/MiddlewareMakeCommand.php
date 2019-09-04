@@ -43,8 +43,7 @@ class MiddlewareMakeCommand extends GeneratorCommand
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
-    {
-        return $rootNamespace.'\Http\Middleware';
+    protected function getDefaultNamespace($rootNamespace) {
+        return config( 'harby-services.namespaces.Middleware' , $rootNamespace . '\Middleware' ) ;
     }
 }

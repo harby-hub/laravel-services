@@ -31,6 +31,17 @@ class ControllerMakeCommand extends GeneratorCommand
 	protected $type = 'Controller';
 
 	/**
+	 * Get the destination class path.
+	 *
+	 * @param  string  $name
+	 * @return string
+	 */
+	protected function getPath( $name ) {
+		$name = Str::replaceFirst( $this -> rootNamespace( ) , '' , $name );
+		return $this -> laravel [ 'path' ] . '/' . str_replace( '\\' , '/' , $name ) .'Controller.php';
+	}
+
+	/**
 	 * Get the stub file for the generator.
 	 *
 	 * @return string
@@ -59,7 +70,7 @@ class ControllerMakeCommand extends GeneratorCommand
 	 * @return string
 	 */
 	protected function getDefaultNamespace( $rootNamespace ) {
-		return $rootNamespace . '\Http\Controllers' ;
+		return config( 'harby-services.namespaces.Controllers' , $rootNamespace . '\Http\Controllers' ) ;
 	}
 
 	/**
