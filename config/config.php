@@ -16,12 +16,12 @@ return [
 		'Path'		=> base_path( 'graphql/schema.graphql' ),
 		'exists'	=> true,
 		'edit'		=> true,
-	]
+	],
 
 	'web' => [
 		'Path' => base_path( 'routes/web.php' ),
 		'edit' => true,
-	]
+	],
 
 	'api' => [
 		'Path' => base_path( 'routes/api.php' ),
