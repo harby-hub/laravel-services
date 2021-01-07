@@ -3,7 +3,6 @@
 namespace harby\services\Eloquent ;
 
 use Validator;
-use harby\services\Interfaces\service as InterfaceService;
 
 abstract class service implements InterfaceService{
 
