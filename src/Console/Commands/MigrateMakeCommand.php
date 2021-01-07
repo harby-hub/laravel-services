@@ -9,6 +9,7 @@ use Illuminate\Database\Console\Migrations\BaseCommand;
 
 class MigrateMakeCommand extends BaseCommand
 {
+    
     /**
      * The console command signature.
      *
@@ -135,8 +136,7 @@ class MigrateMakeCommand extends BaseCommand
      *
      * @return bool
      */
-    protected function usingRealPath()
-    {
+    protected function usingRealPath( ) {
         return $this->input->hasOption('realpath') && $this->option('realpath');
     }
 }

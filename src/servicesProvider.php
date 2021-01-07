@@ -18,6 +18,7 @@ class servicesProvider extends ServiceProvider {
             __DIR__ . '/../config/config.php' => base_path( 'config/harby-services.php' )
         ], 'config' );
         if ($this->app->runningInConsole()) {
+            $this->registerMigrateMakeCommand() ;
             $this->commands([
                 ModelMakeCommand::class,
                 ControllerMakeCommand::class,
@@ -28,5 +29,17 @@ class servicesProvider extends ServiceProvider {
             ]);
         }
     }
+    protected function registerMigrateMakeCommand()
+    {
+        $this->app->singleton( MigrateMakeCommand::class , function ($app) {
+            // Once we have the migration creator registered, we will create the command
+            // and inject the creator. The creator is responsible for the actual file
+            // creation of the migrations, and may be extended by these developers.
+            $creator = $app['migration.creator'];
 
+            $composer = $app['composer'];
+
+            return new MigrateMakeCommand($creator, $composer);
+        });
+    }
 }
