@@ -17,14 +17,6 @@ class servicesProvider extends ServiceProvider {
         $this->publishes([
             __DIR__ . '/../config/config.php' => base_path( 'config/harby-services.php' )
         ], 'config' );
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register( ): void {
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ModelMakeCommand::class,
@@ -36,4 +28,5 @@ class servicesProvider extends ServiceProvider {
             ]);
         }
     }
+
 }
