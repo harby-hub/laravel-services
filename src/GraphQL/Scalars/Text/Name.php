@@ -2,13 +2,13 @@
 
 namespace harby\services\GraphQL\Scalars\Text;
 
-use harby\services\GraphQL\Abstracts\Texts;
+use harby\services\Abstracts\Scalars\Texts;
 
 class Name extends Texts {
 
-	public $min = 3 ;
-
-	public $max = 191 ;
+	public $min  = 3      ;
+	public $max  = 191    ;
+	public $name = "Name" ;
 
 	public function parseValue( $value ) {
 		if ( is_null ( $value )                ) $this -> Error( "$this->name can not be null"                   );

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Attributes;
+namespace harby\services\Traits\Attributes;
 
 use Auth ;
 

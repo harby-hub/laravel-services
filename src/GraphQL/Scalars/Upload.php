@@ -6,15 +6,12 @@ use GraphQL\Error\Error;
 use GraphQL\Error\InvariantViolation;
 use Illuminate\Http\UploadedFile;
 
-use harby\services\GraphQL\Abstracts\type;
+use harby\services\Abstracts\Scalars\type;
 
 class Upload extends type {
-    /**
-     * This always throws, as the Upload scalar can only be used as an argument.
-     *
-     *
-     * @throws \GraphQL\Error\InvariantViolation
-     */
+
+    public $name = "Upload" ;
+
     public function serialize( $value ) : void {
         throw new InvariantViolation( '"Upload" cannot be serialized, it can only be used as an argument.' );
     }

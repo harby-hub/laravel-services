@@ -2,13 +2,13 @@
 
 namespace harby\services\GraphQL\Scalars\Text;
 
-use harby\services\GraphQL\Abstracts\Texts;
+use harby\services\Abstracts\Scalars\Texts;
 
 class Text extends Texts {
 
-	public $min = null ;
-
-	public $max = 65534 ;
+	public $min  = null   ;
+	public $max  = 65534  ;
+	public $name = "Text" ;
 
 	public function __construct( ) {
 

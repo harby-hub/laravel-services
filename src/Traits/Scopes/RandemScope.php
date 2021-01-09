@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Scopes;
+namespace harby\services\Traits\Scopes;
 
 trait RandemScope {
 

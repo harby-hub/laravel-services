@@ -7,7 +7,6 @@ use GraphQL\Language\AST\StringValueNode;
 use GraphQL\Type\Definition\ScalarType;
 
 class ShortText extends Text {
-
-	public $max = 191 ;
-
+	public $max  = 191         ;
+    public $name = "ShortText" ;
 }

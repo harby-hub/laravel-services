@@ -4,9 +4,11 @@ namespace harby\services\GraphQL\Scalars;
 
 use harby\services\Services\Functions;
 
-use harby\services\GraphQL\Abstracts\type;
+use harby\services\Abstracts\Scalars\type;
 
 class Url extends type {
+
+	public $name = "Url" ;
 
 	public function serialize( $value ) {
 		return $value;

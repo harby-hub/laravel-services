@@ -5,8 +5,13 @@ namespace harby\services\Abstracts\Scalars;
 use GraphQL\Error\Error;
 use GraphQL\Language\AST\StringValueNode;
 use GraphQL\Type\Definition\ScalarType;
+use GraphQL\Language\AST\Node;
 
 Abstract class type extends ScalarType {
+
+    public function __toString( ) : string {
+        return '';
+    }
 
 	public function serialize( $value ) {
 		return $value ;
@@ -32,7 +37,7 @@ Abstract class type extends ScalarType {
         return gettype( $var );
 	}
 
-	public function parseLiteral( $valueNode ) {
+	public function parseLiteral( Node $valueNode, ?array $variables = NULL ) {
 		if ( ! $valueNode instanceof StringValueNode ) $this -> Error( 'Query error: Can only parse strings got: ' . $valueNode -> kind , [ $valueNode ] );
 		return $valueNode -> value;
 	}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Methods;
+namespace harby\services\Traits\Methods;
 
 trait ActiveMethods {
 

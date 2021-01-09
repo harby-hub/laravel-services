@@ -8,6 +8,7 @@ use harby\services\Abstracts\Scalars\DateScalar ;
 
 class Date extends DateScalar {
 
+    public $name = "Date" ;
     public string $pattern = 'Y-m-d' ;
 
     protected function format( Carbon $carbon ) : string {

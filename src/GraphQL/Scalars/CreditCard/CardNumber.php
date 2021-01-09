@@ -2,9 +2,11 @@
 
 namespace harby\services\GraphQL\Scalars\CreditCard;
 
-use harby\services\GraphQL\Abstracts\Texts;
+use harby\services\Abstracts\Scalars\Texts;
 
 class CardNumber extends Texts {
+
+    public $name = "CardNumber" ;
 
     public string $type           ;
     public string $Creditcardname ;
@@ -14,8 +16,8 @@ class CardNumber extends Texts {
     public array  $cvc_length     ;
     public bool   $checksum_test  ;
 
-    public int $min = 12 ;
-    public int $max = 20 ;
+    public int    $min  = 12           ;
+    public int    $max  = 20           ;
 
     public array $available_cards = [
         // Firs debit cards

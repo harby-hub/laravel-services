@@ -42,6 +42,10 @@ abstract class DateScalar extends type {
         return $this -> tryParsingDate( $value , Error::class );
     }
 
+    public function __toString( ) : string {
+        return '';
+    }
+
     /**
      * Parse a literal provided as part of a GraphQL query string into a Carbon instance.
      *

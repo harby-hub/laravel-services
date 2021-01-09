@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Traits\Relations;
+namespace harby\services\Traits\Relations;
 
-use App\Models\OauthAccessToken   ;
-use App\Models\pincode            ;
-use App\Models\Notification       ;
-use App\Models\image              ;
-use App\Models\session            ;
-use App\Models\country            ;
+use harby\services\Models\OauthAccessToken   ;
+use harby\services\Models\pincode            ;
+use harby\services\Models\Notification       ;
+use harby\services\Models\image              ;
+use harby\services\Models\country            ;
 
 trait UserRelations {
 

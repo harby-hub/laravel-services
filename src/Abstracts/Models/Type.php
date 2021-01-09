@@ -2,10 +2,10 @@
 
 namespace harby\services\Abstracts\Models;
 
-use App\Traits\Attributes\transNameAttribute;
-use App\Traits\Boots\globalBootTypeFunction;
-use App\Traits\Scopes\getIdInTypeScope;
-use App\Traits\Scopes\RandemScope;
+use harby\services\Traits\Attributes\transNameAttribute;
+use harby\services\Traits\Boots\globalBootTypeFunction;
+use harby\services\Traits\Scopes\getIdInTypeScope;
+use harby\services\Traits\Scopes\RandemScope;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 Abstract class Type extends \Eloquent {

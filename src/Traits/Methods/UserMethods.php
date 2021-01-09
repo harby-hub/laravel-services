@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Traits\Methods;
+namespace harby\services\Traits\Methods;
 
 use Storage;
 use Hash;
 
-use App\Services\BaseAuthClass	;
-use App\Models\image        	;
+use harby\services\Services\BaseAuthClass	;
+use harby\services\Models\image        	;
 
 trait UserMethods {
 

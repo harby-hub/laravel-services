@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Boots;
+namespace harby\services\Traits\Boots;
 
 trait globalBootTypeFunction {
 

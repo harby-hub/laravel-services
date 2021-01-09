@@ -17,7 +17,7 @@ use harby\services\Console\Commands\TestMakeCommand;
 
 class BuilderProvider extends ServiceProvider {
 
-    protected function register( ) {
+    public function register( ) {
 		DB::connection( ) -> enableQueryLog( ) ;
 
 		Builder::macro( 'tabelStatus' , function( ) {
