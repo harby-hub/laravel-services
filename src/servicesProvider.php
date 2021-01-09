@@ -19,6 +19,7 @@ class servicesProvider extends ServiceProvider {
 
     public function boot( ) {
         $this -> loadTranslationsFrom( resource_path( 'lang/Mutations' ) , 'Mutations' );
+        $this -> loadTranslationsFrom( resource_path( 'lang/tables'    ) , 'tables'    );
         $this->publishes([ __DIR__ . '/../config/config.php' => base_path( 'config/harby-services.php' ) ] , 'config' );
         if ( $this -> app -> runningInConsole( ) ) {
             $this -> registerMigrateMakeCommand( ) ;
