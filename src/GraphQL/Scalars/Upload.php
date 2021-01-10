@@ -12,7 +12,7 @@ class Upload extends type {
 
     public $name = "Upload" ;
 
-    public function serialize( $value ) : void {
+    public function serialize( $value ) : string {
         throw new InvariantViolation( '"Upload" cannot be serialized, it can only be used as an argument.' );
     }
 
