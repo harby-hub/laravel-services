@@ -10,10 +10,6 @@ class Url extends type {
 
 	public $name = "Url" ;
 
-	public function serialize( $value ) {
-		return $value;
-	}
-
 	public function parseValue( $value ) {
 		if ( empty( $value ) ) return '' ;
 		$value = filter_var( $value , FILTER_SANITIZE_URL ) ;
