@@ -9,23 +9,19 @@ use GraphQL\Language\AST\Node;
 
 Abstract class type extends ScalarType {
 
-    public function __toString( ) : string {
-        return '';
-    }
-
-	public function serialize( $value ) {
+	public function serialize( $value ) : string {
 		return $value ;
 	}
 
-	public function serialize_string( $value ) {
+	public function serialize_string( string $value ) : string {
 		return mb_substr( htmlspecialchars( $value , ENT_NOQUOTES , 'utf-8' , false ) , 0 , $this -> max );
 	}
 
-	public function Error( string $message , mix $nodes = null ) {
+	public function Error( string $message , mix $nodes = null ) : void {
 		throw new Error( $message , $nodes );
 	}
 
-	public function printSafeJson( $var ) {
+	public function printSafeJson( mix $var ) : string {
         if ( $var instanceof stdClass ) $var = ( array ) $var ;
         if ( is_array(  $var ) ) return json_encode( $var )      ;
         if ( $var === ''       ) return '(empty string)'         ;

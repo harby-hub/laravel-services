@@ -19,7 +19,7 @@ class Functions{
 
 	const HEXADECIMALCOLORWITHALPHAEGEX = '/#([a-f]|[A-F]|[0-9]){4}(([a-f]|[A-F]|[0-9]){4})?\b/' ;
 
-	public static function rand( int $length = 6 ) : int {
+	public static function rand( int $length = 5 ) : int {
 		return rand( pow( 10 , $length - 1 ) , pow( 10 , $length ) - 1 ) ;
 	}
 

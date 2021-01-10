@@ -10,11 +10,11 @@ Abstract class Texts extends type {
 		$this -> description = "like normal string but limit from $this->min to $this->max characters" ;
 	}
 
-	public function serialize( $value ) {
-		return $this -> serialize_string( ) ;
+	public function serialize( $value ) : string {
+		return $this -> serialize_string( $value ) ;
 	}
 
-	public function parseValueReturn( $value ) {
+	public function parseValueReturn( string $value ) : string {
 		return htmlspecialchars( $value , ENT_NOQUOTES , 'utf-8' , false );
 	}
 

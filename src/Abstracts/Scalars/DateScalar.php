@@ -28,7 +28,7 @@ abstract class DateScalar extends type {
      *
      * @param  \Carbon\Carbon|string  $value
      */
-    public function serialize( $value ): string {
+    public function serialize( $value ) : string {
         if ( ! $value instanceof Carbon ) $value = $this -> tryParsingDate( $value , InvariantViolation::class );
         return $this -> format( $value );
     }
@@ -40,10 +40,6 @@ abstract class DateScalar extends type {
      */
     public function parseValue( $value ) : Carbon {
         return $this -> tryParsingDate( $value , Error::class );
-    }
-
-    public function __toString( ) : string {
-        return '';
     }
 
     /**
