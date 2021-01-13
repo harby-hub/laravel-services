@@ -150,7 +150,7 @@ class printer extends mb_string {
 			else $cellsHasNotLength [ $key ] = $cell ;
 		}
 		$cellFullLength = ( $this -> Fullcols - count( $cells ) - $this -> length( implode( '' , $LineParts ) ) ) / count( $cellsHasNotLength ) + 2 ;
-		foreach( $cellsHasNotLength as $key => $cell ) $LineParts[ $key ] = $this -> makeCell( $cell + [ 'length' => $cellFullLength ]) ;
+		foreach( $cellsHasNotLength as $key => $cell ) $LineParts[ $key ] = $this -> makeCell( $cell + [ 'length' => $cellFullLength - ( $key % 2 ) ]) ;
 		ksort( $LineParts ) ;
 		return $this -> line( implode( $this -> default_color( $this -> spaceColBar ) , $LineParts ) ) ;
 	}
