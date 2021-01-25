@@ -1,22 +1,127 @@
 <?php
 
-namespace DummyNamespace;
+namespace DummyNamespace ;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase ;
 
-class DummyClass extends TestCase
-{
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function testExample()
-    {
-        $response = $this->get('/');
+use App\Models\User ;
 
-        $response->assertStatus(200);
-    }
+use Illuminate\Http\UploadedFile ;
+use Illuminate\Foundation\Testing\WithFaker ;
+use Illuminate\Foundation\Testing\RefreshDatabase ;
+
+class DummyClassTest extends TestCase {
+
+	public function Authorization( ) {
+
+		$this -> token = $this -> json( 'get' , 'token' ) -> getData( );
+
+		return $this -> json( 'post' , 'login' , [
+			'_token' => $this -> token,
+			'email' => User::find( 1 ) -> email,
+			'password' => 'password',
+		] ) -> getData( true )[ 'success' ][ 'token' ];
+
+	}
+
+	public function testCreateDummyClassWithMiddleware( ) {
+
+		$data = [
+			'name' => "New DummyClass" ,
+			'description' => "This is a DummyClass",
+		];
+
+		$response = $this -> json( 'POST' , '/api/DummyClass' , $data );
+		$response->assertStatus( 401 );
+		$response->assertJson([ 'message' => "Unauthenticated." ]);
+
+		echo "\n\e[0;32;40mUnauthenticated!\e[0m\n";
+
+	}
+
+	public function testCreateDummyClass( ) {
+
+	   $data = [
+			'name' => "New DummyClass",
+			'description' => "This is a DummyClass",
+		];
+		
+		$response = $this -> withHeaders([
+			'Authorization' => 'Bearer ' . $this -> Authorization(),
+		]) -> json( 'POST' , '/api/DummyClass' , $data );
+
+		$response -> assertStatus( 200 );
+		$response -> assertJsonStructure([
+			'code'		,
+			'check'		,
+			'title'		,
+			'message'	,
+			'body'		,
+			'errors'	,
+		]);
+		$response->assertJson([ 'code'	=> 200		]);
+		$response->assertJson([ 'check'	=> true		]);
+		$response->assertJson([ 'body'	=> $data	]);
+		$response->assertJson([ 'error'	=> null		]);
+		$response->assertJson([ 'title'	=> "DummyClass store was successful" ]);
+
+		echo "\n\e[0;32;40mtestCreatePost was successful!\e[0m\n";
+
+	}
+
+	public function testGettingAllDummyClasss( ) {
+
+		$response = $this->json( 'GET' , '/api/DummyClass' );
+
+		$response -> assertStatus( 200 );
+
+		$response -> assertJsonStructure( [ [
+			'id'			,
+			'user_id'		,
+			'name'			,
+			'description'	,
+			'active'		,
+			'deleted_at'	,
+			'created_at'	,
+			'updated_at'	,
+		] ] ) ;
+	}
+
+	public function testUpdateDummyClass( ) {
+
+		$response = $this -> json( 'GET' , '/api/DummyClass' );
+		$response -> assertStatus( 200 );
+
+		$product = $response -> getData( )[ 0 ];
+
+		$update = $this -> withHeaders([
+            'Authorization' => 'Bearer ' . $this -> Authorization( ),
+        ]) -> json( 'post' , '/api/DummyClass/' . $product -> id , [ 'name' => "Changed for test" ] );
+
+		$update -> assertStatus( 200 );
+
+		$update->assertJson([ 'message' => "DummyClass Updated!" ]);
+
+	}
+
+	public function testUploadImage( ) {
+		$response = $this->json('POST', '/api/upload-file', [
+			'image' => UploadedFile::fake()->image('image.jpg')
+		]);
+		$response->assertStatus(201);
+		$this->assertNotNull($response->getData());
+	}
+
+	public function testDeleteDummyClass( ) {
+		$response = $this->json('GET', '/api/DummyClass');
+		$response->assertStatus(200);
+
+		$product = $response->getData()[0];
+
+		$user = factory(\App\User::class)->create();
+		$delete = $this->actingAs($user, 'api')->json('DELETE', '/api/DummyClass/'.$product->id);
+		$delete->assertStatus(200);
+		$delete->assertJson(['message' => "DummyClass Deleted!"]);
+	}
+
 }

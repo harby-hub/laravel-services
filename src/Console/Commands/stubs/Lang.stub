@@ -1,0 +1,9 @@
+<?php
+
+return [
+    'valid' => [
+    	'successful'	=> 'successful, all inputs is Valid',
+    	'error'			=> 'error, check response body',
+    ],
+    'Created' => 'DummyClass Created successful!',
+];

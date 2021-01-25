@@ -1,0 +1,91 @@
+<?php
+
+namespace harby\services\Console\Commands ;
+
+use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputOption;
+
+class FactoryMakeCommand extends GeneratorCommand
+{
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $name = 'service:factory';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Create a new model factory';
+
+    /**
+     * The type of class being generated.
+     *
+     * @var string
+     */
+    protected $type = 'Factory';
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub( ) {
+        return __DIR__.'/stubs/factory.stub';
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace( $rootNamespace ) {
+        return config( 'harby-services.namespaces.Models' , $rootNamespace . '\Models' ) ;
+    }
+
+    /**
+     * Build the class with the given name.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function buildClass( $name ) {
+        return str_replace(
+            [
+                'NamespacedDummyModel',
+                'DummyModel',
+            ],
+            [
+                $name,
+                class_basename($name),
+            ],
+            parent::buildClass($name)
+        );
+    }
+
+    /**
+     * Get the destination class path.
+     *
+     * @param  string  $name
+     * @return string
+     */
+    protected function getPath( $name ) {
+        $name = str_replace( [ '\\' , '/' ] , '' , $this->argument('name') );
+        return $this -> laravel -> databasePath( ) . "/factories/{$name}Factory.php" ;
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions( ) {
+        return [
+            [ 'model' , 'm' , InputOption::VALUE_OPTIONAL , 'The name of the model' ],
+        ];
+    }
+}

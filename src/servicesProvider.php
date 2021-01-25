@@ -10,30 +10,34 @@ use harby\services\Console\Commands\ModelMakeCommand;
 use harby\services\Console\Commands\ControllerMakeCommand;
 use harby\services\Console\Commands\MigrateMakeCommand;
 use harby\services\Console\Commands\TestMakeCommand;
+use harby\services\Console\Commands\FactoryMakeCommand;
+use harby\services\Console\Commands\LangMakeCommand;
 
 class servicesProvider extends ServiceProvider {
 
-    public function boot( ) {
-        $this->publishes([
-            __DIR__ . '/../config/config.php' => base_path( 'config/harby-services.php' )
-        ], 'config' );
-    }
+	public function boot( ) {
+		$this->publishes([
+			__DIR__ . '/../config/config.php' => base_path( 'config/harby-services.php' )
+		], 'config' );
+	}
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register( ): void {
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                ModelMakeCommand::class,
-                ControllerMakeCommand::class,
-                RequestsMakeCommand::class,
-                ServiceMakeCommand::class,
-                MigrateMakeCommand::class,
-                TestMakeCommand::class,
-            ]);
-        }
-    }
+	/**
+	 * Register any application services.
+	 *
+	 * @return void
+	 */
+	public function register( ): void {
+		if ( $this -> app -> runningInConsole( ) ) {
+			$this -> commands([
+				ModelMakeCommand::class		,
+				ControllerMakeCommand::class,
+				RequestsMakeCommand::class	,
+				ServiceMakeCommand::class	,
+				MigrateMakeCommand::class	,
+				TestMakeCommand::class		,
+				FactoryMakeCommand::class	,
+				LangMakeCommand::class		,
+			]);
+		}
+	}
 }

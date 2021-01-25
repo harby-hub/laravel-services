@@ -1,6 +1,6 @@
 <?php
 
-namespace Nuwave\Lighthouse\Console;
+use Illuminate\Console\GeneratorCommand;
 
 class QueryCommand extends LighthouseGeneratorCommand
 {
@@ -9,7 +9,7 @@ class QueryCommand extends LighthouseGeneratorCommand
      *
      * @var string
      */
-    protected $name = 'lighthouse:query';
+    protected $name = 'service:query';
 
     /**
      * The console command description.
@@ -31,9 +31,8 @@ class QueryCommand extends LighthouseGeneratorCommand
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace): string
-    {
-        return config('lighthouse.namespaces.queries');
+    protected function getDefaultNamespace( $rootNamespace ) : string {
+        return config( 'harby-services.namespaces.queries' , config( 'lighthouse.namespaces.queries' ) ) ;
     }
 
     /**
@@ -41,8 +40,7 @@ class QueryCommand extends LighthouseGeneratorCommand
      *
      * @return string
      */
-    protected function getStub(): string
-    {
-        return __DIR__.'/stubs/field.stub';
+    protected function getStub( ) : string {
+        return __DIR__ . '/stubs/field.stub' ;
     }
 }

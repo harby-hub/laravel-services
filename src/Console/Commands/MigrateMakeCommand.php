@@ -4,11 +4,9 @@ namespace harby\services\Console\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Composer;
-use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Database\Console\Migrations\BaseCommand;
 
-class MigrateMakeCommand extends BaseCommand
-{
+class MigrateMakeCommand extends BaseCommand {
     /**
      * The console command signature.
      *
@@ -49,8 +47,7 @@ class MigrateMakeCommand extends BaseCommand
      * @param  \Illuminate\Support\Composer  $composer
      * @return void
      */
-    public function __construct(MigrationCreator $creator, Composer $composer)
-    {
+    public function __construct( MigrationCreator $creator , Composer $composer ) {
         parent::__construct();
 
         $this->creator = $creator;
