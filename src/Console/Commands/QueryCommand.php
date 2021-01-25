@@ -1,8 +1,10 @@
 <?php
 
+namespace harby\services\Console\Commands;
+
 use Illuminate\Console\GeneratorCommand;
 
-class QueryCommand extends LighthouseGeneratorCommand
+class QueryCommand extends GeneratorCommand
 {
     /**
      * The name of the console command.

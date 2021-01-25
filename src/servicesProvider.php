@@ -8,14 +8,16 @@ use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use harby\services\Console\Commands\RequestsMakeCommand;
-use harby\services\Console\Commands\ServiceMakeCommand;
-use harby\services\Console\Commands\ModelMakeCommand;
 use harby\services\Console\Commands\ControllerMakeCommand;
-use harby\services\Console\Commands\MigrateMakeCommand;
-use harby\services\Console\Commands\TestMakeCommand;
 use harby\services\Console\Commands\FactoryMakeCommand;
 use harby\services\Console\Commands\LangMakeCommand;
+use harby\services\Console\Commands\MiddlewareMakeCommand;
+use harby\services\Console\Commands\ModelMakeCommand;
+use harby\services\Console\Commands\MutationCommand;
+use harby\services\Console\Commands\QueryCommand;
+use harby\services\Console\Commands\RequestsMakeCommand;
+use harby\services\Console\Commands\ServiceMakeCommand;
+use harby\services\Console\Commands\TestMakeCommand;
 
 class servicesProvider extends ServiceProvider {
 
@@ -26,14 +28,16 @@ class servicesProvider extends ServiceProvider {
         if ( $this -> app -> runningInConsole( ) ) {
             $this -> registerMigrateMakeCommand( ) ;
             $this -> commands( [
-				ModelMakeCommand::class		,
-				ControllerMakeCommand::class,
-				RequestsMakeCommand::class	,
-				ServiceMakeCommand::class	,
-				MigrateMakeCommand::class	,
-				TestMakeCommand::class		,
-				FactoryMakeCommand::class	,
-				LangMakeCommand::class		,
+				ControllerMakeCommand :: class ,
+				FactoryMakeCommand    :: class ,
+				LangMakeCommand       :: class ,
+				MiddlewareMakeCommand :: class ,
+				ModelMakeCommand      :: class ,
+				MutationCommand       :: class ,
+				QueryCommand          :: class ,
+				RequestsMakeCommand   :: class ,
+				ServiceMakeCommand    :: class ,
+				TestMakeCommand       :: class ,
             ] );
         }
     }

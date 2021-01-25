@@ -1,6 +1,6 @@
 <?php
 
-namespace Illuminate\Routing\Console;
+namespace harby\services\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
 

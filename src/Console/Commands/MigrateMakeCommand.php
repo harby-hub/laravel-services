@@ -4,6 +4,7 @@ namespace harby\services\Console\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Composer;
+use Illuminate\Database\Migrations\MigrationCreator;
 use Illuminate\Database\Console\Migrations\BaseCommand;
 
 class MigrateMakeCommand extends BaseCommand {
