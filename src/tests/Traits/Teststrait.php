@@ -31,8 +31,8 @@ trait Teststrait {
 		token_type
 	}' ;
 
-	protected static testconsole $console          ;
-	protected static bool        $wasSetup = false ;
+	public static testconsole $console          ;
+	public static bool        $wasSetup = false ;
 
 	protected function setUp( ) : void {
 		parent::setUp( );
@@ -43,7 +43,7 @@ trait Teststrait {
 		static::$console -> updateCase( $this );
 	}
 
-	/* public function database_startup( ) {
+	public function database_startup( ) {
 
 		Schema:: disableForeignKeyConstraints ( ) ;
 		if ( static::$ModelsTranck ) foreach( static::$ModelsTranck as $model ) ( static::$ModelsRoute . '\\' . $model )::truncate ( ) ;
@@ -52,7 +52,7 @@ trait Teststrait {
 
 		return $this ;
 
-	} */
+	}
 
 	protected function tearDown( ) : void {
 		parent::tearDown( );
