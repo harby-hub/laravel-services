@@ -2,41 +2,52 @@
 
 namespace DummyNamespace ;
 
-use Illuminate\Foundation\Http\FormRequest;
+use harby\services\Eloquent\Request;
 
-class DummyClass extends FormRequest {
-    /**
-     * Determine if the DummyClass is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize( ) {
-        return false;
-    }
+class DummyClass extends Request {
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules() {
-        return [
-            //
-        ];
-    }
+	public $example = [
+		'user_id'		=> 'required|numeric|exists:DummyClass.id'		,
+		'email'			=> 'nullable|email|unique:users,email_address'	,
+		'name'			=> 'required|string|max:255|min:3'				,
+		'title'			=> 'required|string|max:255|min:3'				,
+		'description'	=> 'nullable|string|max:5000|min:3'				,
+		'url'			=> 'required|url|max:255|min:3'					,
+		'Boolean'		=> 'required|Boolean|max:255|min:3'				,
+		'date_format'	=> 'required|date_format'						,
+	];
 
-    public function sanitize( ) {
-        $input = $this->all();
+	public $rulesStore = [
+		'name'			=> 'required|string|max:255|min:3'	,
+		'description'	=> 'nullable|string|max:5000|min:3'	,
+	];
 
-        if (preg_match("#https?://#", $input['url']) === 0) {
-            $input['url'] = 'http://'.$input['url'];
-        }
+	public $rulesUpdate = [
+		'id'			=> 'required|numeric|exists:DummyClass.id',
+		'name'			=> 'required|string|max:255|min:3'	,
+		'description'	=> 'nullable|string|max:5000|min:3'	,
+	];
 
-        $input['name'] = filter_var($input['name'], FILTER_SANITIZE_STRING);
-        $input['description'] = filter_var($input['description'], 
-        FILTER_SANITIZE_STRING);
+	public $rulesdestroy = [
+		'id'			=> 'required|numeric|exists:DummyClass.id'
+	];
 
-        $this->replace($input);     
-    }
+	public function store( $form ) {
+		$this -> form = $form ;
+		$this -> rules = $this -> rulesStore ;
+		return $this ;
+	}
+
+	public function update( $form ) {
+		$this -> form = $form ;
+		$this -> rules = $this -> rulesUpdate ;
+		return $this ;
+	}
+
+	public function destroy( $form ) {
+		$this -> form = $form ;
+		$this -> rules = $this -> rulesdestroy ;
+		return $this ;
+	}
 
 }

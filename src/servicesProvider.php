@@ -14,6 +14,8 @@ use harby\services\Console\Commands\ModelMakeCommand;
 use harby\services\Console\Commands\ControllerMakeCommand;
 use harby\services\Console\Commands\MigrateMakeCommand;
 use harby\services\Console\Commands\TestMakeCommand;
+use harby\services\Console\Commands\FactoryMakeCommand;
+use harby\services\Console\Commands\LangMakeCommand;
 
 class servicesProvider extends ServiceProvider {
 
@@ -24,12 +26,14 @@ class servicesProvider extends ServiceProvider {
         if ( $this -> app -> runningInConsole( ) ) {
             $this -> registerMigrateMakeCommand( ) ;
             $this -> commands( [
-                ModelMakeCommand      :: class ,
-                ControllerMakeCommand :: class ,
-                RequestsMakeCommand   :: class ,
-                ServiceMakeCommand    :: class ,
-                MigrateMakeCommand    :: class ,
-                TestMakeCommand       :: class ,
+				ModelMakeCommand::class		,
+				ControllerMakeCommand::class,
+				RequestsMakeCommand::class	,
+				ServiceMakeCommand::class	,
+				MigrateMakeCommand::class	,
+				TestMakeCommand::class		,
+				FactoryMakeCommand::class	,
+				LangMakeCommand::class		,
             ] );
         }
     }

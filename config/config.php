@@ -26,6 +26,6 @@ return [
 	'api' => [
 		'Path' => base_path( 'routes/api.php' ),
 		'edit' => true,
-	]
+	],
 
 ];

@@ -3,82 +3,93 @@
 namespace DummyNamespace;
 
 use Illuminate\Http\Request;
-use DummyRootNamespaceHttp\Controllers\Controller;
-use DummyRootNamespaceHttp\Services\DummyClassServices;
+use App\Services\DummyClassServices;
+use App\Models\DummyClass;
 
 class DummyClassController extends Controller {
 
-    public function getServices( ) { return new DummyClassServices( ); }
+	/**
+	 * Instantiate a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct( ) {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index( ) {
-        //
-    }
+		$this -> middleware( 'auth:api' ) -> only( 'store' );
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        //
-    }
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store( Request $request ) {
-        $store = $this -> getServices ( ) -> store ( $request );
-        return response( ) -> json( $store , $store -> code );
-    }
+	public function getServices( ) { return new DummyClassServices( ); }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show( $id ) {
-        //
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index( ) {
+		return DummyClass::Conditions( ) -> get( ) ;
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit( $id ) {
-        //
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create() {
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id) {
-        $update = $this -> getServices ( ) -> update ( $request , $id );
-        return response( ) -> json( $update , $update -> code );
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store( Request $request ) {
+		$store = $this -> getServices ( ) -> store ( $request -> all( ) );
+		return response( ) -> json( $store , $store -> code );
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy( $id ) {
-        $destroy = $this -> getServices ( ) -> destroy ( $id );
-        return response( ) -> json( $destroy , $destroy -> code );
-    }
+	/**
+	 * Display the specified resource.
+	 *
+     * @param  \DummyClass  $DummyClassVariable
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show( DummyClass $DummyClassVariable ) {
+		//
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+     * @param  \DummyClass  $DummyClassVariable
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit( DummyClass $DummyClassVariable ) {
+		//
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+     * @param  \DummyClass  $DummyClassVariable
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, DummyClass $DummyClassVariable ) {
+		$update = $this -> getServices ( ) -> update ( $request -> all( ) , $DummyClassVariable );
+		return response( ) -> json( $update , $update -> code );
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+     * @param  \DummyClass  $DummyClassVariable
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy( DummyClass $DummyClassVariable ) {
+		$destroy = $this -> getServices ( ) -> destroy ( $id );
+		return response( ) -> json( $destroy , $destroy -> code );
+	}
 }

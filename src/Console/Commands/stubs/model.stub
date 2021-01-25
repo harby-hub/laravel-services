@@ -4,6 +4,7 @@ namespace DummyNamespace;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\JsonEncodingException;
 
 class DummyClass extends Model {
 
@@ -17,6 +18,9 @@ class DummyClass extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
+		'user_id'		,
+		'name'			,
+		'description'	,
 		'active'		,
 		'deleted_at'	,
 		'created_at'	,
@@ -38,7 +42,6 @@ class DummyClass extends Model {
 	 * @var array
 	 */
 	protected $appends = [
-        'user',
         'created_at_diffForHumans',
 	];
 
@@ -59,13 +62,15 @@ class DummyClass extends Model {
 	 * @var array
 	 */
 	protected $casts = [
-		'active'		=> 'boolean',
-		'created_at'	=> 'datetime',
-		'updated_at'	=> 'datetime',
-		'deleted_at'	=> 'datetime',
+		'name'			=> 'string'		,
+		'description'	=> 'string'		,
+		'active'		=> 'boolean'	,
+		'created_at'	=> 'datetime'	,
+		'updated_at'	=> 'datetime'	,
+		'deleted_at'	=> 'datetime'	,
 	];
 
-    public function getuserAttribute ( $value ) {
+    public function user ( $value ) {
         return $this -> belongsTo( User::class , 'user_id' ) -> get( ) [ 0 ] ;
     }
 
@@ -87,5 +92,49 @@ class DummyClass extends Model {
 			-> Active( )
 		;
 	}
+
+    /**
+     * Convert the model instance to an array.
+     *
+     * @return array
+     */
+    public function toArray( ) {
+        return array_merge( $this -> attributesToArray( ) , $this -> relationsToArray( ) ) ;
+    }
+
+    /**
+     * Convert the model instance to JSON.
+     *
+     * @param  int  $options
+     * @return string
+     *
+     * @throws \Illuminate\Database\Eloquent\JsonEncodingException
+     */
+    public function toJson( $options = 0 ) {
+        $json = json_encode( $this -> jsonSerialize( ) , $options );
+
+        if (JSON_ERROR_NONE !== json_last_error( ) ) throw JsonEncodingException::forModel( $this , json_last_error_msg( ) ) ;
+
+        return $json;
+    }
+
+    /**
+     * Convert the object into something JSON serializable.
+     *
+     * @return array
+     */
+    public function jsonSerialize( ) {
+        return $this -> toArray( );
+    }
+
+    /**
+     * Get all of the models from the database.
+     *
+     * @param  array|mixed  $columns
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public static function all( $columns = [ '*' ] ) {
+        return static::query() -> get( is_array( $columns ) ? $columns : func_get_args( ) );
+    }
 
 }

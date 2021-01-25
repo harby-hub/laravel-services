@@ -56,8 +56,23 @@ class ServiceMakeCommand extends GeneratorCommand {
 	 * @return string
 	 */
 	protected function getPath( $name ) {
-		$name = Str::replaceFirst( $this -> rootNamespace( ) , '' , $name );
-		return $this -> laravel [ 'path' ] . '/' . str_replace( '\\' , '/' , $name ) .'Service.php';
+		$name = Str::studly( class_basename(  $name ) ) ;
+		return $this -> laravel [ 'path' ] . '/' . str_replace( '\\' , '/' , $name ) . 'Services.php';
+	}
+
+	/**
+	 * Replace the class name for the given stub.
+	 *
+	 * @param  string  $stub
+	 * @param  string  $name
+	 * @return string
+	 */
+	protected function replaceClass( $stub , $name ) {
+		$name = Str::studly( class_basename(  $name ) ) ;
+
+		$class = str_replace( $this -> getNamespace( $name ) . '\\' , '' , $name );
+
+		return str_replace( 'DummyClass' , $class , $stub );
 	}
 
 	/**
@@ -75,6 +90,7 @@ class ServiceMakeCommand extends GeneratorCommand {
 			$this -> input -> setOption( 'request'		, true ) ;
 			$this -> input -> setOption( 'controller'	, true ) ;
 			$this -> input -> setOption( 'test'			, true ) ;
+			$this -> input -> setOption( 'lang'			, true ) ;
 		}
 
 		if ( $this -> option( 'factory'		) ) $this -> createFactory(		) ;
@@ -83,10 +99,11 @@ class ServiceMakeCommand extends GeneratorCommand {
 		if ( $this -> option( 'request'		) ) $this -> createRequest(		) ;
 		if ( $this -> option( 'controller'	) ) $this -> createController(	) ;
 		if ( $this -> option( 'test'		) ) $this -> createTest(		) ;
+		if ( $this -> option( 'lang'		) ) $this -> createLang(		) ;
 
-		if ( config( 'harby-services.graphql.exists' , true ) ) {
+		/*if ( config( 'harby-services.graphql.exists' , true ) ) {
 			if ( config( 'harby-services.graphql.edit' , true ) ) $this -> editGraphqlSchemaFile(		) ;
-		};
+		};*/
 
 	}
 
@@ -95,7 +112,7 @@ class ServiceMakeCommand extends GeneratorCommand {
 	 *
 	 * @return void
 	 */
-	protected function editGraphqlSchemaFile( ) {
+	protected function editGraphqlSchemaFile( ) : void {
 		$path = config( 'harby-services.graphql.Path' , base_path( 'graphql/schema.graphql' ) );
 
 		if ( File::exists( $path ) ){
@@ -111,13 +128,13 @@ class ServiceMakeCommand extends GeneratorCommand {
 	 *
 	 * @return void
 	 */
-	protected function editwebRouteFile( ) {
+	protected function editwebRouteFile( ) : void {
 		$path = config( 'harby-services.web.Path' , base_path( 'routes/web.php' ) );
 		$classname = Str::studly( class_basename( $this -> argument( 'name' ) ) );
 
 		if ( File::exists( $path ) ){
 			$contents = File::get( $path );
-			$new_contents = $contents . PHP_EOL . "Route::resource( '{$classname}' , '{$classname}Controller' ) -> except([ " . PHP_EOL . "	'create', 'store', 'update', 'destroy' " . PHP_EOL . "]);" ;
+			$new_contents = $contents . PHP_EOL . PHP_EOL . "Route::resource( '{$classname}' , '{$classname}Controller' ) -> except([ " . PHP_EOL . "	'create', 'store', 'update', 'destroy' " . PHP_EOL . "]);" ;
 			File::put( $path , $new_contents );
 			$this -> info( 'edit a web route file successfully.' );
 		}
@@ -128,13 +145,21 @@ class ServiceMakeCommand extends GeneratorCommand {
 	 *
 	 * @return void
 	 */
-	protected function editapiRouteFile( ) {
+	protected function editapiRouteFile( ) : void {
 		$path = config( 'harby-services.api.Path' , base_path( 'routes/api.php' ) );
 		$classname = Str::studly( class_basename( $this -> argument( 'name' ) ) );
 
 		if ( File::exists( $path ) ){
 			$contents = File::get( $path );
-			$new_contents = $contents . PHP_EOL . "Route::apiResource( '{$classname}' , '{$classname}Controller' ) ;" ;
+			//$new_contents = $contents . PHP_EOL . PHP_EOL . "Route::apiResource( '{$classname}' , '{$classname}Controller' ) ;" ;
+			$new_contents = $contents . PHP_EOL . `Route::prefix( '` . $classname . `' ) -> group( function ( ) {
+				Route::model( '` . $classname . `'		, 'App\\Models\\` . $classname . `' ) ;
+				Route::get(		'/'			, '` . $classname . `Controller@index'	) -> name( '` . $classname . `.index'		) ;
+				Route::post(	'/'			, '` . $classname . `Controller@store'	) -> name( '` . $classname . `.store'		) -> middleware( 'auth' );
+				Route::get(		'{` . $classname . `}'	, '` . $classname . `Controller@show'		) -> name( '` . $classname . `.show'	) ;
+				Route::post(	'{` . $classname . `}'	, '` . $classname . `Controller@update'		) -> name( '` . $classname . `.update'	) ;
+				Route::delete(	'{` . $classname . `}'	, '` . $classname . `Controller@destroy'	) -> name( '` . $classname . `.destroy'	) ;
+			});` ;
 			File::put( $path , $new_contents );
 			$this -> info( 'edit a api route file successfully.' );
 		}
@@ -143,36 +168,45 @@ class ServiceMakeCommand extends GeneratorCommand {
 	/**
 	 * Build the test replacement values.
 	 *
-	 * @param  array  $replace
-	 * @return array
+	 * @return void
 	 */
-	protected function createTest ( array $replace = [ ] ) {
+	protected function createLang ( ) : void {
+		$testClass = Str::studly( $this -> argument( 'name' ) );
+		$this -> call( 'service:lang' , [
+			'name' => $testClass,
+		]); 
+	}
+
+	/**
+	 * Build the test replacement values.
+	 *
+	 * @return void
+	 */
+	protected function createTest ( ) : void {
 		$testClass = Str::studly( $this -> argument( 'name' ) );
 		$this -> call( 'service:test' , [
-			'name' => "{$testClass}Test",
+			'name' => $testClass,
 		]); 
 	}
 
 	/**
 	 * Build the model replacement values.
 	 *
-	 * @param  array  $replace
-	 * @return array
+	 * @return void
 	 */
-	protected function createModel ( array $replace = [ ] ) {
+	protected function createModel ( ) : void {
 		$modelClass = Str::studly( $this -> argument( 'name' ) );
 		$this -> call( 'service:model' , [
-			'name' => "{$modelClass}Model",
+			'name' => $modelClass,
 		]); 
 	}
 
 	/**
 	 * Build the request replacement values.
 	 *
-	 * @param  array  $replace
-	 * @return array
+	 * @return void
 	 */
-	protected function createRequest ( array $replace = [ ] ) {
+	protected function createRequest ( ) : void {
 		$requestClass = Str::studly( $this -> argument( 'name' ) );
 		$this -> call( 'service:request' , [
 			'name' => "{$requestClass}Request",
@@ -184,11 +218,11 @@ class ServiceMakeCommand extends GeneratorCommand {
 	 *
 	 * @return void
 	 */
-	protected function createFactory( ) {
+	protected function createFactory( ) : void {
 		$factory = Str::studly( class_basename( $this -> argument( 'name' ) ) );
-		$this -> call( 'make:factory' , [
-			'name' => "{$factory}Factory",
-			'--model' => $this->qualifyClass($this->getNameInput()),
+		$this -> call( 'service:factory' , [
+			'name' => $factory ,
+			'--model' => $this -> argument( 'name' ) ,
 		]); 
 	 }
 
@@ -197,8 +231,11 @@ class ServiceMakeCommand extends GeneratorCommand {
 	 *
 	 * @return void
 	 */
-	protected function createMigration( ) {
-		$table = Str::snake( Str::pluralStudly( class_basename( $this -> argument( 'name' ) ) ) );
+	protected function createMigration( ) : void {
+		$table = Str::studly( class_basename( $this -> argument( 'name' ) ) );
+
+		$this -> info( $table );
+
 		$this -> call( 'service:migration' , [
 			'name' => "create_{$table}_table",
 			'--create' => $table,
@@ -210,15 +247,20 @@ class ServiceMakeCommand extends GeneratorCommand {
 	 *
 	 * @return void
 	 */
-	protected function createController( ) {
+	protected function createController( ) : void {
+
 		if ( config( 'harby-services.web.edit' , true ) ) $this -> editwebRouteFile( ) ;
 		if ( config( 'harby-services.api.edit' , true ) ) $this -> editapiRouteFile( ) ;
+
 		$controller = Str::studly( class_basename( $this -> argument( 'name' ) ) );
+
 		$this -> call('service:controller', [
 			'name' => "{$controller}",
 			'--resource' => 'resource'
 		]);
+
 		$this -> line( shell_exec( 'php artisan route:list' ) );
+
 	}
 
 	/**
@@ -236,6 +278,7 @@ class ServiceMakeCommand extends GeneratorCommand {
 			[ 'migration'	, 'mi'		, InputOption::VALUE_NONE		, 'Create a new migration file for the model'								],
 			[ 'request'		, 'r'		, InputOption::VALUE_NONE		, 'Create a new form request class for the model'							],
 			[ 'test'		, 't'		, InputOption::VALUE_NONE		, 'Create a new form test class for the service'							],
+			[ 'lang'		, 'l'		, InputOption::VALUE_NONE		, 'Create a new lang file for the service'									],
 		];
 	}
 }

@@ -1,22 +1,22 @@
 <?php
 
-namespace Nuwave\Lighthouse\Console;
+namespace harby\services\Console\Commands;
+use Illuminate\Console\GeneratorCommand;
 
-class MutationCommand extends LighthouseGeneratorCommand
-{
+class MutationCommand extends GeneratorCommand {
     /**
      * The name of the console command.
      *
      * @var string
      */
-    protected $name = 'lighthouse:mutation';
+    protected $name = 'service:mutation' ;
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a class for a single field on the root Mutation type.';
+    protected $description = 'Create a class for a single field on the root Mutation type.' ;
 
     /**
      * The type of class being generated.
@@ -31,9 +31,8 @@ class MutationCommand extends LighthouseGeneratorCommand
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace): string
-    {
-        return config('lighthouse.namespaces.mutations');
+    protected function getDefaultNamespace( $rootNamespace ) : string {
+        return config( 'harby-services.namespaces.Mutation' , config( 'lighthouse.namespaces.mutations' ) ) ;
     }
 
     /**
@@ -41,8 +40,7 @@ class MutationCommand extends LighthouseGeneratorCommand
      *
      * @return string
      */
-    protected function getStub(): string
-    {
-        return __DIR__.'/stubs/field.stub';
+    protected function getStub( ) : string {
+        return __DIR__ . '/stubs/field.stub' ;
     }
 }

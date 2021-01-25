@@ -3,60 +3,60 @@
 namespace DummyNamespace ;
 
 use harby\services\Eloquent\service;
-
-use DummyRootNamespaceHttp\Model\DummyClassModel;
-use DummyRootNamespaceHttp\Request\DummyClassRequest;
 use Illuminate\Support\Facades\Event;
 
-class DummyClassService extends service{
+use Auth;
+use App\Models\DummyClass;
+use App\Requests\DummyClassRequest;
 
-	public function getRequest( ) {
-		return new DummyClassRequest( );
-	}
+class DummyClassServices extends service {
+
+	public function getRequest( ) { return new DummyClassRequest( ); }
 
 	public function getEvents( ){ }
 
-	public function store( Request $request ) {
+	public function store( $form ) {
 
-		$validator = $this -> validRequest( $request -> all( ) , $this -> getRequest( ) -> store( ) -> rules( ) );
+		$validator = $this -> validRequest( $form , 'store' );
 
 		if ( ! $validator -> check ) return $validator ;
 		else $sanitize = $validator -> body ;
 
-		Event::fire('DummyClass.store.before' );
+		//Event::fire( 'DummyClass.store.before' );
 
-		$create = DummyClassModel::create( $sanitize );
+		$sanitize [ 'user_id' ] = Auth::user( ) -> id ;
 
-		Event::fire('DummyClass.store.after', $create);
+		$create = DummyClass::create( $sanitize );
 
-		$this -> code	= 200	;
-		$this -> check	= true	;
-		$this -> title	= 'store successful' ;
-		$this -> message= __( 'store successful' );
-		$this -> body	= $create ;
+		//Event::fire( 'DummyClass.store.after' , $create -> toArray( )	);
+
+		$this -> title	= 'DummyClass store was successful'	;
+		$this -> message= __( 'DummyClass.Created' )		;
+		$this -> body	= $create -> toArray( )				;
 
 		return $this -> response( );
 
 	}
 
-	public function update(Request $request, $id) {
+	public function update( $form , $DummyClass ) {
 
-		$validator = $this -> validRequest( $request -> all( ) , $this -> getRequest( ) -> update( ) -> rules( ) );
+		$validator = $this -> validRequest( $form , 'update' );
 
 		if ( ! $validator -> check ) return $validator ;
 		else $sanitize = $validator -> body ;
 
-		Event::fire('DummyClass.update.before' );
+		//Event::fire( 'DummyClass.update.before' );
 
-		$update = DummyClassModel::find( $id ) -> update( $sanitize );
+		$sanitize [ 'user_id'	] = Auth::user( ) -> id		;
+		$sanitize [ 'update_at' ] = date( 'Y-m-d H:i:s' )	;
 
-		Event::fire('DummyClass.update.after', $update);
+		$update = $DummyClass -> update( $sanitize );
 
-		$this -> code	= 200	;
-		$this -> check	= true	;
-		$this -> title	= 'update successful' ;
-		$this -> message= __( 'update successful' );
-		$this -> body	= $update ;
+		//Event::fire( 'DummyClass.update.after', $update -> toArray( ) );
+
+		$this -> title	= 'update successful'			;
+		$this -> message= __( 'DummyClass.successful' )	;
+		$this -> body	= $update -> toArray( )			;
 
 		return $this -> response( );
 
@@ -64,19 +64,17 @@ class DummyClassService extends service{
 
 	public function destroy( $id ) {
 
-		$validator = $this -> validRequest( $request -> all( ) , $this -> getRequest( ) -> destroy( ) -> rules( ) );
+		$validator = $this -> validRequest( $form , 'destroy' );
 
 		if ( ! $validator -> check ) return $validator ;
 		else $sanitize = $validator -> body ;
 
-		Event::fire('DummyClass.destroy.before' );
+		Event::fire( 'DummyClass.destroy.before' );
 
 		$destroy = DummyClassModel::find( $id ) -> SoftDeletes(  );
 
-		Event::fire('DummyClass.destroy.after', $destroy);
+		Event::fire( 'DummyClass.destroy.after', $destroy );
 
-		$this -> code	= 200	;
-		$this -> check	= true	;
 		$this -> title	= 'destroy successful' ;
 		$this -> message= __( 'destroy successful' );
 		$this -> body	= $destroy ;
