@@ -2,7 +2,11 @@
 
 namespace harby\services;
 
+use DB;
+
 use Illuminate\Support\ServiceProvider;
+
+use Illuminate\Database\Eloquent\Builder;
 
 use harby\services\Console\Commands\RequestsMakeCommand;
 use harby\services\Console\Commands\ServiceMakeCommand;
@@ -15,20 +19,13 @@ use harby\services\Console\Commands\LangMakeCommand;
 
 class servicesProvider extends ServiceProvider {
 
-	public function boot( ) {
-		$this->publishes([
-			__DIR__ . '/../config/config.php' => base_path( 'config/harby-services.php' )
-		], 'config' );
-	}
-
-	/**
-	 * Register any application services.
-	 *
-	 * @return void
-	 */
-	public function register( ): void {
-		if ( $this -> app -> runningInConsole( ) ) {
-			$this -> commands([
+    public function boot( ) {
+        $this -> loadTranslationsFrom( resource_path( 'lang/Mutations' ) , 'Mutations' );
+        $this -> loadTranslationsFrom( resource_path( 'lang/tables'    ) , 'tables'    );
+        $this -> publishes( [ __DIR__ . '/../config/config.php' => base_path( 'config/harby-services.php' ) ] , 'config' );
+        if ( $this -> app -> runningInConsole( ) ) {
+            $this -> registerMigrateMakeCommand( ) ;
+            $this -> commands( [
 				ModelMakeCommand::class		,
 				ControllerMakeCommand::class,
 				RequestsMakeCommand::class	,
@@ -37,7 +34,14 @@ class servicesProvider extends ServiceProvider {
 				TestMakeCommand::class		,
 				FactoryMakeCommand::class	,
 				LangMakeCommand::class		,
-			]);
-		}
-	}
+            ] );
+        }
+    }
+
+    protected function registerMigrateMakeCommand( ) {
+        $this -> app -> singleton( MigrateMakeCommand::class , function ( $app ) {
+            return new MigrateMakeCommand( $app[ 'migration.creator' ] , $app[ 'composer' ] );
+        });
+    }
+
 }
