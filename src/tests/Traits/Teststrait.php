@@ -74,9 +74,9 @@ trait Teststrait {
 
 	public function GraphQLFiles( string $query , array $variables = [ ] )  {
 
-		foreach ( Arr::dot( $variables ) as $key => $variable ) if ( $variable instanceof UploadedFile ) {
-			$map   [ "variables_$key" ] = [ "variables.$key" ] ;
-			$files [ "variables_$key" ] = $variable            ;
+		foreach ( \Arr::dot( $variables ) as $key => $variable ) if ( $variable instanceof UploadedFile ) {
+			$map   [ str_replace( '.' , '_' , $key ) ] = [ "variables.$key" ] ;
+			$files [ str_replace( '.' , '_' , $key ) ] = $variable            ;
 		} ;
 
         return $this -> call( 'POST' , config( 'lighthouse.route.uri' ) , [
