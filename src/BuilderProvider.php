@@ -8,13 +8,6 @@ use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Database\Eloquent\Builder;
 
-use harby\services\Console\Commands\RequestsMakeCommand;
-use harby\services\Console\Commands\ServiceMakeCommand;
-use harby\services\Console\Commands\ModelMakeCommand;
-use harby\services\Console\Commands\ControllerMakeCommand;
-use harby\services\Console\Commands\MigrateMakeCommand;
-use harby\services\Console\Commands\TestMakeCommand;
-
 class BuilderProvider extends ServiceProvider {
 
     public function register( ) {
