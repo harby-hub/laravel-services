@@ -23,11 +23,11 @@ class Functions{
 		return rand( pow( 10 , $length - 1 ) , pow( 10 , $length ) - 1 ) ;
 	}
 
-	public static function hashThing( mix $thing ) : String {
+	public static function hashThing( $thing ) : String {
 		return base64_encode( json_encode( $thing ) )  ;
 	}
 
-	public static function unhashThing( String $Hash ) : mix {
+	public static function unhashThing( String $Hash ) {
 		return json_decode( base64_decode( $Hash ) , true )  ;
 	}
 
