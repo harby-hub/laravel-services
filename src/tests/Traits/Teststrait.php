@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\UploadedFile ;
 
 use Illuminate\Support\Collection ;
+use \Laravel\Passport\Passport ;
+
+use Tests\TestCase;
 
 trait Teststrait {
 
@@ -39,6 +42,7 @@ trait Teststrait {
 		if ( ! static::$wasSetup ) {
 			static::$console  = new testconsole ( ) ;
 			static::$wasSetup = true                ;
+			TestResponse::macro( 'assertResponseStatusMessageAndLog' , fn( TestCase $TestCase , ... $args ) => $TestCase -> assertResponseStatusMessageAndLog ( $this , ... $args ) );
 		}
 		static::$console -> updateCase( $this );
 	}
@@ -57,6 +61,11 @@ trait Teststrait {
 	protected function tearDown( ) : void {
 		parent::tearDown( );
 		static::$console -> tearDown( );
+	}
+
+	public function passport ( ...$args ) {
+		Passport::actingAs( ...$args );
+		return $this ;
 	}
 
 	public function log( string $line , string $msg , string $type = 'text' , string $color = 'success' , bool $check = null , int $code = null ) {
