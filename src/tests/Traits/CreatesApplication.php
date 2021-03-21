@@ -10,7 +10,8 @@ trait CreatesApplication {
 
 	protected function beforeAll( ) : void {
 		if ( ! static::$wasSetupCreatesApplication ++ ) {
-			$this -> database_startup( );
+			$this -> database_startup ( );
+			$this -> buildMacros      ( );
 			static::$wasSetupCreatesApplication = true ;
 		}
 	}

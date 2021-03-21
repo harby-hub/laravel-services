@@ -40,9 +40,6 @@ class FireBaseCloudMessageingGun {
      * @return array|mixed
      */
 	protected function push( ) : array {
-		dd(
-			$this -> request( )
-		);
 		return Http::withHeaders( $this -> Headers( ) ) -> post( 'https://fcm.googleapis.com/fcm/send' , $this -> request( ) ) -> json( ) ;
 	}
 

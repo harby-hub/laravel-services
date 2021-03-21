@@ -37,12 +37,17 @@ trait Teststrait {
 	public static testconsole $console          ;
 	public static bool        $wasSetup = false ;
 
+	protected function buildMacros( ) : void {
+		$_this = $this ;
+		TestResponse::macro( 'assertResponseStatusMessageAndLog' , fn( ... $args ) => $_this -> assertResponseStatusMessageAndLog ( $this , ... $args ) );
+		TestResponse::macro( 'assertMessagesLog'                 , fn( ... $args ) => $_this -> assertMessagesLog                 (         ... $args ) );
+	}
+
 	protected function setUp( ) : void {
 		parent::setUp( );
 		if ( ! static::$wasSetup ) {
 			static::$console  = new testconsole ( ) ;
 			static::$wasSetup = true                ;
-			TestResponse::macro( 'assertResponseStatusMessageAndLog' , fn( TestCase $TestCase , ... $args ) => $TestCase -> assertResponseStatusMessageAndLog ( $this , ... $args ) );
 		}
 		static::$console -> updateCase( $this );
 	}
