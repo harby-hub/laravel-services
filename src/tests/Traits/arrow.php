@@ -27,17 +27,17 @@ trait arrow {
 		*/
 	] ;
 
-	public function start_arrow( string $type = 'right' , String $backgroundColor ) : string {
+	public function start_arrow( string $type = 'right' , String $backgroundColor = '242;242;242' ) : string {
 		if( $type === "right" ) return $this -> wordColor ( $this -> RightwardsArrow , null , $backgroundColor ) ;
 		else                    return $this -> wordColor ( $this -> LeftwardsArrow  ,        $backgroundColor ) ;
 	}
 
-	public function end_arrow( string $type = 'right' , String $backgroundColor ) : string {
+	public function end_arrow( string $type = 'right' , String $backgroundColor = '242;242;242' ) : string {
 		if( $type === "left" ) return $this -> wordColor ( $this -> LeftwardsArrow  , null , $backgroundColor ) ;
 		else                   return $this -> wordColor ( $this -> RightwardsArrow ,        $backgroundColor ) ;
 	}
 
-	public function arrow( String $word , String $foregroundColor , String $backgroundColor , string $type = 'right' ) : string {
+	public function arrow( String $word , String $foregroundColor , String $backgroundColor = '242;242;242' , string $type = 'right' ) : string {
 		return
 			$this -> start_arrow( $type                                , $backgroundColor ) .
 			$this -> wordColor  ( ' ' . $word . ' ' , $foregroundColor , $backgroundColor ) .
