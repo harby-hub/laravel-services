@@ -16,6 +16,14 @@ class FireBaseCloudMessageingGun {
 
 	/** 
      *
+	   FireBase massages Notification attrs will send with massage
+	 * 
+	 * @var array $Notification
+	*/
+	public $Notification   ;
+
+	/** 
+     *
 	   FireBase massages all attrs will send with massage
 	 * 
 	 * @var array $data
@@ -26,12 +34,14 @@ class FireBaseCloudMessageingGun {
        Create a new FireBase Cloud Messageing.
      *
 	 * @var string[] $tokens
+     * @param string $Notification
 	 * @var array $data
      * @return void
      */
-    public function __construct( array $tokens , array $data ) {
-		$this -> tokens = $tokens ;
-		$this -> data   = $data   ;
+    public function __construct( array $tokens , array $Notification , array $data ) {
+		$this -> tokens       = $tokens       ;
+		$this -> Notification = $Notification ;
+		$this -> data         = $data         ;
 	}
 
     /**
@@ -49,8 +59,9 @@ class FireBaseCloudMessageingGun {
      * @return array
      */
 	protected function request( ) : array { return [
-		'registration_ids' => $this -> tokens ,
-		'data'             => $this -> data
+		'registration_ids' => $this -> tokens       ,
+		'notification'     => $this -> Notification ,
+		'data'             => $this -> data         ,
 	] ; }
 
     /**
@@ -65,12 +76,13 @@ class FireBaseCloudMessageingGun {
 	/** 
 	   static function to send massage
 	 * @param string[] $tokens
+     * @param string $Notification
      * @param string $body
      * @param array $data
 	 * @return array
 	*/
-	static public function fire( array $tokens , array $data ) : array {
-		return ( ! empty( $tokens ) ) ? ( new static( $tokens , $data ) ) -> push( ) : [ ] ;
+	static public function fire( array $tokens , array $Notification , array $data ) : array {
+		return ( ! empty( $tokens ) ) ? ( new static( $tokens , $Notification , $data ) ) -> push( ) : [ ] ;
 	}
 
 }
