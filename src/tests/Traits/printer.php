@@ -141,6 +141,33 @@ class printer extends mb_string {
 		return $this -> printInLogBar( );
 	}
 
+	public function throwError( string $ActualAsString , string $ExpectedAsString ) {
+		/* dd(
+			explode( $this -> MakeNewLine , $ActualAsString )  ,
+			$ActualAsString   ,
+			$ExpectedAsString ,
+			$Diff             ,
+		); */
+		$linewarp = explode( $this -> MakeNewLine , $ActualAsString   ) ;
+		$msgwarp  = explode( $this -> MakeNewLine , $ExpectedAsString ) ;
+		$max	  = max( count ( $linewarp ) , count ( $msgwarp  ) ) - 1 ;
+		for ( $i = 0 ; $i <= $max ; $i++ ) $this -> printCells([
+			'print'   =>  $linewarp[ $i ] === $msgwarp[ $i ] ? '' : $this -> str_pad( 'diff' , $this -> logSpaceStatus - 1 , '*' , STR_PAD_BOTH ),
+			'color'   => $this -> danger          ,
+			'length'  => $this -> logSpaceStatus ,
+		] , [
+			'print'    => $linewarp[ $i ] ?? ' ' ,
+			'color'    => $linewarp[ $i ] === $msgwarp[ $i ] ? $this -> success : $this -> danger ,
+			'padType'  => STR_PAD_RIGHT            ,
+			'hasArrow' => $linewarp[ $i ] !== $msgwarp[ $i ]            ,
+		] , [
+			'print'   => $msgwarp[ $i ] ?? ' ' ,
+			'color'   => $linewarp[ $i ] === $msgwarp[ $i ] ? $this -> success : $this -> danger ,
+			'padType' => STR_PAD_RIGHT            ,
+		]);
+		return $this -> printInLogBar( );
+	}
+
 	public function printCells( ... $cells ) {
 		$cellsHasNotLength = [ ] ;
 		$LineParts         = [ ] ;

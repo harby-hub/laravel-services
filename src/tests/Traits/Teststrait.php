@@ -78,6 +78,11 @@ trait Teststrait {
 		return $this ;
 	}
 
+	public function throwError( ... $args ) {
+		static::$console -> throwError( ... $args );
+		return $this ;
+	}
+
 	public function makeFile( $path ) : UploadedFile {
 
 		[ 'filename' => $filename ] = pathinfo( $path = storage_path( ) . $path ) ;
@@ -155,5 +160,27 @@ trait Teststrait {
 
 		return $this ;
 	}
+
+	protected function onNotSuccessfulTest( \Throwable $t ) : void {
+
+		/* $this -> throwError( $t -> getComparisonFailure( ) -> getActualAsString( ) , $t -> getComparisonFailure( ) -> getExpectedAsString( ) );
+		$this -> log( $t -> getComparisonFailure( ) -> getDiff( ) , '' , 'text' , 'danger' , false , 500 );
+
+		throw new \Throwable ; */
+        throw $t;
+		dd(
+			// $t, 
+			$t -> getMessage( ), 
+			get_class( $t ) ,
+			"PHPUnit\Framework\ExpectationFailedException" ,
+			/* $t->getComparisonFailure( ) -> getDiff( ) ,
+			str_replace( [ "\\n" , "\n" ] , '' , $t -> getComparisonFailure( ) -> getDiff( ) ) ,
+			$t -> getComparisonFailure( ) -> getActualAsString( ) ,
+			$t -> getComparisonFailure( ) -> getExpectedAsString( ) , */
+			static::class ,
+		);
+		throw new Throwable ;
+        throw $t;
+    }
 
 }
