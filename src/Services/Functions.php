@@ -2,6 +2,8 @@
 
 namespace harby\services\Services;
 
+use Illuminate\Http\UploadedFile;
+
 class Functions{
 
 	const URLREGEX = 
@@ -29,6 +31,33 @@ class Functions{
 
 	public static function unhashThing( String $Hash ) {
 		return json_decode( base64_decode( $Hash ) , true )  ;
+	}
+
+	public static function command_exists( string $command ) : bool {
+		$whereIsCommand = PHP_OS == 'WINNT' ? 'where' : 'which';
+		$process = proc_open( "$whereIsCommand $command" , [
+			[ "pipe", "r" ],
+			[ "pipe", "w" ],
+			[ "pipe", "w" ],
+		], $pipes );
+		if ( $process !== false ) {
+			$stdout = stream_get_contents($pipes[1]);
+			$stderr = stream_get_contents($pipes[2]);
+			fclose($pipes[1]);
+			fclose($pipes[2]);
+			proc_close($process);
+			return $stdout != '';
+		}
+		return false;
+	}
+
+	public static function CreateTempFileFromString( String $content , String $FileName = '' , String $tempPrefix = 'php' , String $extension = '' ) : UploadedFile {
+		$path = tempnam( sys_get_temp_dir( ) , $tempPrefix );
+		rename( $path , $path = $path . $extension );
+		$temp = fopen( $path , "r+b" );
+		fwrite( $temp , $content );
+		register_shutdown_function( fn( ) => unlink( $path ) );
+		return ( new UploadedFile ( $path , $FileName , mime_content_type( $path ) , null , true ) );
 	}
 
 }
