@@ -4,8 +4,6 @@ namespace harby\services\Services;
 
 use Illuminate\Http\UploadedFile;
 
-use Symfony\Component\Process\Process ;
-
 class Functions{
 
 	const URLREGEX = 
@@ -36,21 +34,7 @@ class Functions{
 	}
 
 	public static function command_exists( string $command ) : bool {
-		$whereIsCommand = PHP_OS == 'WINNT' ? 'where' : 'which';
-		$process = proc_open( "$whereIsCommand $command" , [
-			[ "pipe", "r" ],
-			[ "pipe", "w" ],
-			[ "pipe", "w" ],
-		], $pipes );
-		if ( $process !== false ) {
-			$stdout = stream_get_contents($pipes[1]);
-			$stderr = stream_get_contents($pipes[2]);
-			fclose($pipes[1]);
-			fclose($pipes[2]);
-			proc_close($process);
-			return $stdout != '';
-		}
-		return false;
+		return Process::runProcess( [ PHP_OS == 'WINNT' ? 'where' : 'which' , $command ] ) -> getOutPut( ) ;
 	}
 
 	public static function CreateTempFileFromString( String $content , String $FileName = '' , String $tempPrefix = 'php' , String $extension = '' ) : UploadedFile {
@@ -62,15 +46,8 @@ class Functions{
 		return ( new UploadedFile ( $path , $FileName , mime_content_type( $path ) , null , true ) );
 	}
 
-    public static function runProcess( array $arrayOfCommand ) : Process {
-        $process = new Process( $arrayOfCommand ) ;
-        $process -> setTimeout( 3600 );
-        $process -> run( );
-		return $process ;
-    }
-
     public static function getFilesFromArchiveFile( UploadedFile $file , Int $fromSeconds = 1 ) : array {
-		$process = static::runProcess( [ 'bsdtar' , '-tvf' , $file -> path( ) ] ) ;
+		$process = Process::runProcess( [ 'bsdtar' , '-tvf' , $file -> path( ) ] ) ;
         return ! $process -> isSuccessful( ) ? [ ] : \Str::of( $process -> getOutPut( ) )
             -> explode ( "\n" )
             -> filter  (      )
