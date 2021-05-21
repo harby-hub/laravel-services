@@ -7,6 +7,8 @@ use Str;
 use Symfony\Component\Process\Process as cmd;
 use Illuminate\Http\UploadedFile;
 
+use harby\services\Consts\regularExpression;
+
 class Process extends cmd{
 
     public static function runProcess( array $arrayOfCommand ) : Process {
@@ -19,7 +21,7 @@ class Process extends cmd{
 	public static function get_average_colours( UploadedFile $file ) : array {
 		$process = static::fromShellCommandline( 'convert "$Filename" pnm:- | pnmquant 6 | convert - -unique-colors -depth 8 txt:' ) ;
 		$process -> run( null , [ 'Filename' => $file -> getPathname( ) ] );
-		return Str::of( $process -> getOutPut( ) ) -> matchAll ( '/#(?:[a-f0-9]{3}|[a-f0-9]{6})\b/im' ) -> toArray( ) ;
+		return Str::of( $process -> getOutPut( ) ) -> matchAll ( regularExpression::DETECTHEXADECIMALCOLOR ) -> toArray( ) ;
 	}
 
 }
