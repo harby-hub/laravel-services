@@ -57,7 +57,7 @@ trait Teststrait {
 		Schema:: disableForeignKeyConstraints ( ) ;
 		if ( static::$ModelsTranck ) foreach( static::$ModelsTranck as $model ) ( static::$ModelsRoute . '\\' . $model )::truncate ( ) ;
 		Schema:: enableForeignKeyConstraints  ( ) ;
-		artisan:: call( 'db:seed' ) ;
+		Artisan:: call( 'db:seed' ) ;
 
 		return $this ;
 
