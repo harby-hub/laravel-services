@@ -12,7 +12,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "thecodingmachine/safe": "^1.0.3",
-        "webonyx/graphql-php": "^0.13.8|^14.0.0"
+        "webonyx/graphql-php": "*"
     },
     "authors": [
         {
